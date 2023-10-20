@@ -49,6 +49,35 @@ class CustomerList:
         else:
             print("Customer not found")
 
+class Restaurants:
+    def __init__(self, menu:dict, address:str):
+        self.menu = menu
+        self.address = address
+
+class UserCart():
+    def __init__(self, cart:dict):
+        self.cart = cart
+
+    def add_to_cart(self, item:str, quantity:int):
+        if item in self.cart:
+            self.cart[item] += quantity
+        else:
+            self.cart[item] = quantity
+
+    def remove_from_cart(self, item:str, quantity:int):
+        if item in self.cart:
+            if self.cart[item] > quantity:
+                self.cart[item] -= quantity
+            else:
+                del self.cart[item]
+        else:
+            print("Item not found in cart")
+
+    def clear_cart(self):
+        self.cart = {}
+
+    def checkout(self):
+        pass
 
 """
 Test Main
@@ -56,6 +85,11 @@ Test Main
 def main():
     exit = False
     db = CustomerList()
+    restaurants = {
+        "McDonalds": Restaurants({"Big Mac": 5.99, "McChicken": 4.99, "McNuggets": 6.99}, "1234 McDonalds St."),
+        "Burger King": Restaurants({"Whopper": 6.99, "Chicken Sandwich": 5.99, "Fries": 3.99}, "1234 Burger King St."),
+        "Wendys": Restaurants({"Baconator": 7.99, "Spicy Chicken Sandwich": 6.99, "Frosty": 2.99}, "1234 Wendys St.")
+    }
     loggedIn = None
 
     while not(exit):
@@ -74,6 +108,7 @@ def main():
                     payment_information.append(input("Enter credit card number: "))
                     payment_information.append(input("Enter credit card expiration date: "))
                     payment_information.append(input("Enter credit card security code: "))
+                    print()
 
                     if len(payment_information) != 4:
                         print("Invalid input. Please try again.")
@@ -95,8 +130,41 @@ def main():
                     print("Invalid option. Please try again.")
         
         else:
-            print("Logged in")
-            exit = True
+            # made cart created per session
+            cart = UserCart({})
+            selection = input("Options:\n1. View Restaurant Menu\n2. Manage Cart\n3. Exit\n\nPress the number of the option you want: ")
+            
+            match selection:
+                case "1":
+                    restaurantName = input("Enter the name of the restaurant: ")
+                    print(restaurants[restaurantName].menu)
+                case "2":
+                    selection = input("Options:\n1. Add to Cart\n2. Remove from Cart\n3. Clear Cart\n4. Checkout\n5. Exit\n\nPress the number of the option you want: ")
+                    
+                    match selection:
+                        case "1":
+                            item = input("Enter the name of the item: ")
+                            quantity = int(input("Enter the quantity of the item: "))
+                            cart.add_to_cart(item, quantity)
+                        case "2":
+                            item = input("Enter the name of the item: ")
+                            quantity = int(input("Enter the quantity of the item: "))
+                            cart.remove_from_cart(item, quantity)
+                        case "3":
+                            cart.clear_cart()
+                        case "4":
+                            # not implemented here
+                            cart.checkout()
+                        case "5":
+                            print("Exiting..")
+                            exit = True
+                        case _:
+                            print("Invalid option. Please try again.")
+                case "3":
+                    print("Exiting..")
+                    exit = True
+                case _:
+                    print("Invalid option. Please try again.")
         
         print()
 
