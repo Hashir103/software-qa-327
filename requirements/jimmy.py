@@ -1,18 +1,19 @@
 class Database:
     def __init__(self):
-        self.restuarantDatabase = []
+        self.restuarantDatabase = {}
     
     def getRestuarant(self, toFind):
-        if toFind in self.restuarantDatabase:
-            return True
-        else:
-            return False
+        return self.restuaratDatabase[toFind]
         
-    def addRestuarant(self, add):
-        self.restuarantDatabase.append(add)
+    def createAndAdd(self, name, owner, paymentInformation, location, phone):
+        testRestuarant = RestaurantAccount(name, owner, paymentInformation, location, phone)
+        self.restuarantDatabase[testRestuarant.name] = testRestuarant
+        
+    def addRestuarant(self, restuarant):
+        self.restuarantDatabase[restuarant.name] = restuarant
 
     def removeRestuarant(self, removee):
-        self.restuarantDatabase.remove(removee)
+        self.restuarantDatabase.pop(removee.name)
 
         
 class Order:
@@ -73,10 +74,12 @@ class RestaurantAccount:
     def addToMenu(self, menuItem):
         self.menu[menuItem.id] = menuItem
 
+    def getMenu(self):
+        return self.menu()
+
 class jimmyReqs:
     def registerAsRestuarant(database: Database, restuarant):
-        testRestuarant = RestaurantAccount('macdonalds', 'me', '99996665543', 'canada', '1234567890')
-        database.append(testRestuarant)
+        database.createAndAdd('macdonalds', 'me', '99996665543', 'canada', '1234567890')
     def getCurrentOrders(restuarant: RestaurantAccount):
         print(restuarant.getCurrentOrders())
     def restuarantCancelOrder(restuarant: RestaurantAccount, order: Order):
