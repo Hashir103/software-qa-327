@@ -16,34 +16,34 @@ class Database:
         self.restuarantDatabase.pop(removee.name)
 
         
-class Order:
-    global STATUS 
-    STATUS = ('Order Cancelled','Order Finished', "In progress")
-    def __init__(self, id,  restuarant, customer, menuItem):
-        self.restuarant = restuarant
-        self.customer = customer
-        self.id = id
-        self.status = 2
-        self.cancellationReason = ''
-        self.menuItem = menuItem
+# class Order:
+#     global STATUS 
+#     STATUS = ('Order Cancelled','Order Finished', "In progress")
+#     def __init__(self, id,  restuarant, customer, menuItem):
+#         self.restuarant = restuarant
+#         self.customer = customer
+#         self.id = id
+#         self.status = 2
+#         self.cancellationReason = ''
+#         self.menuItem = menuItem
     
-    def setStatus(self, num):
-        self.status = num
+#     def setStatus(self, num):
+#         self.status = num
 
-    def setReason(self, message):
-        self.cancellationReason = message
+#     def setReason(self, message):
+#         self.cancellationReason = message
 
-class MenuItem:
-    def __init__(self, name, cost, custimization, id):
-        self.name = name
-        self.cost = cost
-        self.custimization = custimization
-        self.id - id
+# class MenuItem:
+#     def __init__(self, name, cost, custimization, id):
+#         self.name = name
+#         self.cost = cost
+#         self.custimization = custimization
+#         self.id - id
     
-    #super sus, needs testing
-    def changeInfo(self, varToChange, changeTo):
-        #temp = vars()[varToChange] #this defintely needs to be tested but can be universal if sucessful, otherwise use a dict
-        self.vars()[varToChange] = changeTo
+#     #super sus, needs testing
+#     def changeInfo(self, varToChange, changeTo):
+#         #temp = vars()[varToChange] #this defintely needs to be tested but can be universal if sucessful, otherwise use a dict
+#         self.vars()[varToChange] = changeTo
 
 class RestaurantAccount:
     def __init__(self, name, owner, paymentInformation, location, phone, menu={}):
@@ -78,16 +78,16 @@ class RestaurantAccount:
     def getMenu(self):
         return self.menu
 
-class jimmyReqs:
-    def registerAsRestuarant(database: Database, restuarant):
-        database.createAndAdd('macdonalds', 'me', '99996665543', 'canada', '1234567890', {'1': MenuItem('burger', 5, 'none', '1')})
-    def getCurrentOrders(restuarant: RestaurantAccount):
-        print(restuarant.getCurrentOrders())
-    def restuarantCancelOrder(restuarant: RestaurantAccount, order: Order):
-        restuarant.removeFromOrders(order.id, 0, "Too busy")
+# class jimmyReqs:
+#     def registerAsRestuarant(database: Database, restuarant):
+#         database.createAndAdd('macdonalds', 'me', '99996665543', 'canada', '1234567890', {'1': MenuItem('burger', 5, 'none', '1')})
+#     def getCurrentOrders(restuarant: RestaurantAccount):
+#         print(restuarant.getCurrentOrders())
+#     def restuarantCancelOrder(restuarant: RestaurantAccount, order: Order):
+#         restuarant.removeFromOrders(order.id, 0, "Too busy")
 
-#dont add this part
-def tests():
-    reg = RestaurantAccount(input('Name of Resturant: ', input("Owner: "), input("Money Depoist Info: "), input("Location: "), input("Phone: ")))
+# #dont add this part
+# def tests():
+#     reg = RestaurantAccount(input('Name of Resturant: ', input("Owner: "), input("Money Depoist Info: "), input("Location: "), input("Phone: ")))
 
         

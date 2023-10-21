@@ -1,14 +1,14 @@
-class MenuItem:
-    """
-    MenuItem Class
-    """
-    def __init__(self, name=None, price=None, menuItem=None):
-        if menuItem is not None:
-            self.name = menuItem.name
-            self.price = menuItem.price
-        else:
-            self.name = name
-            self.price = price
+# class MenuItem:
+#     """
+#     MenuItem Class
+#     """
+#     def __init__(self, name=None, price=None, menuItem=None):
+#         if menuItem is not None:
+#             self.name = menuItem.name
+#             self.price = menuItem.price
+#         else:
+#             self.name = name
+#             self.price = price
 
 
 class Cart:
