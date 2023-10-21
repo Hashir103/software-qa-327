@@ -3,10 +3,10 @@ class Database:
         self.restuarantDatabase = {}
     
     def getRestuarant(self, toFind):
-        return self.restuaratDatabase[toFind]
+        return self.restuarantDatabase[toFind]
         
-    def createAndAdd(self, name, owner, paymentInformation, location, phone):
-        testRestuarant = RestaurantAccount(name, owner, paymentInformation, location, phone)
+    def createAndAdd(self, name, owner, paymentInformation, location, phone, menu):
+        testRestuarant = RestaurantAccount(name, owner, paymentInformation, location, phone, menu)
         self.restuarantDatabase[testRestuarant.name] = testRestuarant
         
     def addRestuarant(self, restuarant):
@@ -45,7 +45,7 @@ class MenuItem:
         self.vars()[varToChange] = changeTo
 
 class RestaurantAccount:
-    def __init__(self, name, owner, paymentInformation, location, phone, menu = {}):
+    def __init__(self, name, owner, paymentInformation, location, phone, menu={}):
         self.name = name
         self.owner = owner
         self.paymentInformation = paymentInformation
@@ -75,33 +75,15 @@ class RestaurantAccount:
         self.menu[menuItem.id] = menuItem
 
     def getMenu(self):
-        return self.menu()
+        return self.menu
 
 class jimmyReqs:
     def registerAsRestuarant(database: Database, restuarant):
-        database.createAndAdd('macdonalds', 'me', '99996665543', 'canada', '1234567890')
+        database.createAndAdd('macdonalds', 'me', '99996665543', 'canada', '1234567890', {'1': MenuItem('burger', 5, 'none', '1')})
     def getCurrentOrders(restuarant: RestaurantAccount):
         print(restuarant.getCurrentOrders())
     def restuarantCancelOrder(restuarant: RestaurantAccount, order: Order):
         restuarant.removeFromOrders(order.id, 0, "Too busy")
-
-
-
-
-def main():
-
-    ###
-    #a = []
-    #a.append(input('Name of Resturant: '))
-    #a.append(input("Owner: "))
-    #a.append(input("Money Depoist Info: "))
-    #a.append(input("Location: "))
-    #a.append(input("Phone: "))
-    y = input("f")
-    res = RestaurantAccount('macdonalds', 'me', 'asfsadf', 'canada', 'sadfsaf')
-    print(res.location)###
-    
-main()
 
 #dont add this part
 def tests():
