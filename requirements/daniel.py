@@ -25,8 +25,8 @@ class Cart:
         Output: double
         """
         sum = 0
-        for item in self.items:
-            sum += item.price
+        for item in self.cart:
+            sum += self.cart[item]
         return sum
     
     def checkout(self, user):
@@ -49,8 +49,8 @@ class Cart:
         # Change this line as necessary
         DanielsRequirements.makePayment(user, total + tip)
 
-        if other == '': newOrder = Order(self, address, pickupMethod)
-        else : newOrder = Order(self, address, pickupMethod, other)
+        if other == '': newOrder = Order(self.items, self.restaurant, address, pickupMethod)
+        else : newOrder = Order(self.items, self.restaurant, address, pickupMethod, other)
 
         return newOrder
 
@@ -62,15 +62,17 @@ class Order:
     STATUS = ('Order Cancelled','Preparing Order', 'On the Way', 'Outside', 'Delivered')
     pickup = ('Leave at Door, Meet at Door, Other')
 
-    def __init__(self, items, restaurant, address, pickupMethod, other = None):
+    def __init__(self, items, restaurant, address, pickupMethod = None, other = None):
         """
         Initialize order using customer Cart
         """
         self.items = []
         for item in items:
-            self.items.append(MenuItem(item))
+            self.items.append(item)
 
         self.restaurant = restaurant
+        self.deliverAdd = address
+        self.pickupMethod = pickupMethod
         self.status = 1
         self.expTime = 20  
         self.other = other
