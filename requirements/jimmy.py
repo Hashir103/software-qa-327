@@ -45,7 +45,7 @@ class MenuItem:
         self.vars()[varToChange] = changeTo
 
 class RestaurantAccount:
-    def __init__(self, name, owner, paymentInformation, location, phone):
+    def __init__(self, name, owner, paymentInformation, location, phone, menu = {}):
         self.name = name
         self.owner = owner
         self.paymentInformation = paymentInformation
@@ -53,7 +53,7 @@ class RestaurantAccount:
         self.phone = phone
         self.currentOrders = {}
         self.finishedOrders = {}
-        self.menu = {}
+        self.menu = menu
 
     def addToOrders(self, order):
         self.currentOrders[order.id] = order
