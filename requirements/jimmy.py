@@ -75,6 +75,7 @@ class RestaurantAccount:
 
 class jimmyReqs:
     def registerAsRestuarant(database: Database, restuarant):
+        testRestuarant = RestaurantAccount('macdonalds', 'me', '99996665543', 'canada', '1234567890')
         database.append(restuarant)
     def getCurrentOrders(restuarant: RestaurantAccount):
         print(restuarant.getCurrentOrders())
@@ -84,6 +85,20 @@ class jimmyReqs:
 
 
 
+def main():
+
+    ###
+    #a = []
+    #a.append(input('Name of Resturant: '))
+    #a.append(input("Owner: "))
+    #a.append(input("Money Depoist Info: "))
+    #a.append(input("Location: "))
+    #a.append(input("Phone: "))
+    y = input("f")
+    res = RestaurantAccount('macdonalds', 'me', 'asfsadf', 'canada', 'sadfsaf')
+    print(res.location)###
+    
+main()
 
 #dont add this part
 def tests():
