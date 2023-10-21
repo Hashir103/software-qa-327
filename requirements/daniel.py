@@ -49,8 +49,8 @@ class Cart:
         # Change this line as necessary
         DanielsRequirements.makePayment(user, total + tip)
 
-        if other == '': newOrder = Order(self.items, self.restaurant, address, pickupMethod)
-        else : newOrder = Order(self.items, self.restaurant, address, pickupMethod, other)
+        if other == '': newOrder = Order(self.cart, self.restaurant, address, pickupMethod)
+        else : newOrder = Order(self.cart, self.restaurant, address, pickupMethod, other)
 
         return newOrder
 
@@ -62,14 +62,11 @@ class Order:
     STATUS = ('Order Cancelled','Preparing Order', 'On the Way', 'Outside', 'Delivered')
     pickup = ('Leave at Door, Meet at Door, Other')
 
-    def __init__(self, items, restaurant, address, pickupMethod = None, other = None):
+    def __init__(self, cart, restaurant, address, pickupMethod = None, other = None):
         """
         Initialize order using customer Cart
         """
-        self.items = []
-        for item in items:
-            self.items.append(item)
-
+        self.items = cart
         self.restaurant = restaurant
         self.deliverAdd = address
         self.pickupMethod = pickupMethod
@@ -115,8 +112,8 @@ class Order:
         print(f"Restaurant: {self.restaurant}")
         sum = 0
         for item in self.items:
-            sum += item.price
-            print(f"{item.name}: {item.price}")
+            sum += self.items[item]
+            print(f"{item}: {self.items[item]}")
         print(f"Total: {sum}")
 
 class DanielsRequirements:
