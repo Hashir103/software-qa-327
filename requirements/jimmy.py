@@ -19,12 +19,13 @@ class Database:
 class Order:
     global STATUS 
     STATUS = ('Order Cancelled','Order Finished', "In progress")
-    def __init__(self, id,  restuarant, customer):
+    def __init__(self, id,  restuarant, customer, menuItem):
         self.restuarant = restuarant
         self.customer = customer
         self.id = id
         self.status = 2
         self.cancellationReason = ''
+        self.menuItem = menuItem
     
     def setStatus(self, num):
         self.status = num

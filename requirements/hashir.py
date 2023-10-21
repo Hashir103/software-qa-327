@@ -1,4 +1,5 @@
 import json
+from requirements.daniel import Cart
 
 class Customer:
   """
@@ -129,5 +130,7 @@ class UserCart():
         """
         self.cart = {}
 
-    def checkout(self):
-        pass
+    def checkout(self, user:Customer):
+        """Taken from Daniel's Method"""
+        d_cart = Cart(self.cart)
+        d_cart.checkout(user)

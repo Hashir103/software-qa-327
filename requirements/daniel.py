@@ -2,21 +2,22 @@ class MenuItem:
     """
     MenuItem Class
     """
-    def __init__(self, name, price):
-        self.name = name
-        self.price = price
-    
-    def __init__(self, menuItem):
-        self.name = menuItem.name
-        self.price = menuItem.price
+    def __init__(self, name=None, price=None, menuItem=None):
+        if menuItem is not None:
+            self.name = menuItem.name
+            self.price = menuItem.price
+        else:
+            self.name = name
+            self.price = price
+
 
 class Cart:
     """
     Cart Class
     """
-    def __init__(self, restaurant, items: MenuItem = []):
+    def __init__(self, restaurant, cart={}):
         self.restaurant = restaurant
-        self.items = items
+        self.cart = cart
 
     def getTotal(self):
         """
@@ -117,38 +118,48 @@ class Order:
         print(f"Total: {sum}")
 
 class DanielsRequirements:
+    @staticmethod
     def checkout(cart: Cart, user):
         cart.checkout(user)
     
+    @staticmethod
     def getReceipt(order: Order):
         order.printReceipt()
 
+    @staticmethod
     def cancelOrder(order, user):
         return order.cancelOrder(user)
     
+    @staticmethod
     def getOrderInfo(order: Order):
         order.getInfo() 
 
+    @staticmethod
     def makePayment(user, price) -> bool:    # Place holder function to signify bank transaction
-        valid = user.getMoney(user, price)
-        return valid
+        #valid = user.getMoney(user, price)
+        if len(user) < 4:
+            print("Account error")
+            return False
+        else:
+            print(f"Payment of {price} successful")
+            return True
     
     
 
-def main():
-    inp = None
-    cart = None
-    user = None
-    print("Press Enter to checkout")
-    input("__")
-    order = DanielsRequirements.checkout(cart, user)
+# def main():
+#     inp = None
+#     cart = None
+#     user = None
+#     print("Press Enter to checkout")
+#     input("__")
+#     order = DanielsRequirements.checkout(cart, user)
 
-    DanielsRequirements.getOrderInfo(order)
+#     DanielsRequirements.getOrderInfo(order)
 
-    while not (choice == '2'):
-        choice = input("1 - View Receipt \n 2 - Cancel Order")
-        if choice == '1': DanielsRequirements.getReceipt(order)
+#     while not (choice == '2'):
+#         choice = input("1 - View Receipt \n 2 - Cancel Order")
+#         if choice == '1': DanielsRequirements.getReceipt(order)
     
-    valid = DanielsRequirements.cancelOrder(order)
-    if valid: print("Order successfully cancelled")
+#     valid = DanielsRequirements.cancelOrder(order)
+#     if valid: print("Order successfully cancelled")
 

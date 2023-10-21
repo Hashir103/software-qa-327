@@ -2,10 +2,12 @@
 CISC 327 Assignment 2
 Oct 20, 2023
 Group 23
+
+IMPORTANT, PLEASE RUN FROM THIS DIRECTORY. MAIN.PY IS IN THE ROOT DIRECTORY WITH A FOLDER OF REQUIREMENTS
 """
 # see our individual work in requirements/ folder
-from requirements.hashir import *
-from requirements.jimmy import *
+from requirements.hashir import Customer, CustomerList, UserCart
+from requirements.jimmy import Database
 
 def main():
     exit = False
@@ -109,8 +111,7 @@ def main():
                             case "3":
                                 cart.clear_cart()
                             case "4":
-                                # not implemented here
-                                cart.checkout()
+                                cart.checkout(loggedIn)
                             case "5":
                                 print("Exiting..")
                                 exit = True
