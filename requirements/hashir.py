@@ -1,6 +1,9 @@
 import json
 
 class Customer:
+  """
+  Customer Class
+  """
   def __init__(self, email: str, password: str, phone_number: str, delievery_address: str, payment_information: list):
     self.email = email
     self.password = password
@@ -9,21 +12,40 @@ class Customer:
     self.payment_information = payment_information
 
 class CustomerList:
+    """
+    Customer Database Class
+    """
     def __init__(self):
         self.customers = self.load_customers()
 
     def load_customers(self):
+        """
+        This function loads the customers from the json file
+        Input: None
+        Output: A dictionary of customers
+        """
         with open('requirements/customers.json') as f:
             data = json.load(f)
         return data
 
     def save_customers(self):
+        """
+        This function saves the customers to the json file
+        Input: None
+        Output: None
+        """
         data = self.load_customers()
         with open('requirements/customers.json', 'w') as f:
+            # if there are changes to the database, save it
             if len(data) <= len(self.customers):
                 json.dump(self.customers, f)
 
     def add_customer(self, customer: Customer):
+        """
+        This function adds a customer to the database
+        Input: Customer object
+        Output: None
+        """
         if customer.email in self.customers:
             print("Customer already exists")
         else:
@@ -31,6 +53,11 @@ class CustomerList:
             print("Customer added successfully")
 
     def get_customer(self, email: str, password: str):
+        """
+        This function gets a customer from the database
+        Input: Email and password
+        Output: Customer object
+        """
         account = self.customers.get(email, None)
         if account is not None:
             if account[0] == password:
@@ -44,64 +71,63 @@ class CustomerList:
             return None
 
     def remove_customer(self, email: str):
+        """
+        This function removes a customer from the database
+        Input: Email
+        Output: None
+        """
         if email in self.customers:
             del self.customers[email]
         else:
             print("Customer not found")
 
+class Restaurants:
+    """
+    Restaurant Class
+    """
+    def __init__(self, menu:dict, address:str):
+        self.menu = menu
+        self.address = address
 
-"""
-Test Main
-"""
-def main():
-    exit = False
-    db = CustomerList()
-    loggedIn = None
+class UserCart():
+    """
+    User Cart Class
+    """
+    def __init__(self, cart:dict):
+        self.cart = cart
 
-    while not(exit):
-        
-        if loggedIn is None:
-            selection = input("Options:\n1. Register Customer\n2. Login Customer\n3. Exit\n\nPress the number of the option you want: ")
-
-            match selection:
-                case "1":
-                    email = input("Enter your email: ")
-                    password = input("Enter your password: ")
-                    phone_number = input("Enter your phone number: ")
-                    delievery_address = input("Enter your delievery address: ")
-                    payment_information = []
-                    payment_information.append(input("Enter credit card type: "))
-                    payment_information.append(input("Enter credit card number: "))
-                    payment_information.append(input("Enter credit card expiration date: "))
-                    payment_information.append(input("Enter credit card security code: "))
-
-                    if len(payment_information) != 4:
-                        print("Invalid input. Please try again.")
-
-                    if email and password and phone_number and delievery_address and payment_information:
-                        db.add_customer(Customer(email, password, phone_number, delievery_address, payment_information))
-                    else:
-                        print("Invalid input. Please try again.")
-                        
-                case "2":
-                    email = input("Enter your email: ")
-                    password = input("Enter your password: ")
-
-                    loggedIn = db.get_customer(email, password)
-                case "3":
-                    print("Exiting..")
-                    exit = True
-                case _:
-                    print("Invalid option. Please try again.")
-        
+    def add_to_cart(self, item:str, quantity:int):
+        """
+        This function adds an item to the cart
+        Input: Item name and quantity
+        Output: None
+        """
+        if item in self.cart:
+            self.cart[item] += quantity
         else:
-            print("Logged in")
-            exit = True
-        
-        print()
+            self.cart[item] = quantity
 
-    db.save_customers()
-    
+    def remove_from_cart(self, item:str, quantity:int):
+        """
+        This function removes an item from the cart
+        Input: Item name and quantity
+        Output: None
+        """
+        if item in self.cart:
+            if self.cart[item] > quantity:
+                self.cart[item] -= quantity
+            else:
+                del self.cart[item]
+        else:
+            print("Item not found in cart")
 
-if __name__ == '__main__':
-    main()
+    def clear_cart(self):
+        """
+        This function clears the cart
+        Input: None
+        Output: None
+        """
+        self.cart = {}
+
+    def checkout(self):
+        pass
