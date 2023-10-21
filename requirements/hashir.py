@@ -82,13 +82,13 @@ class CustomerList:
         else:
             print("Customer not found")
 
-class Restaurants:
-    """
-    Restaurant Class -> Testing class for now, will be replaced with Jimmy's in main implementation
-    """
-    def __init__(self, menu:dict, address:str):
-        self.menu = menu
-        self.address = address
+# class Restaurants:
+#     """
+#     Restaurant Class -> Testing class for now, will be replaced with Jimmy's in main implementation
+#     """
+#     def __init__(self, menu:dict, address:str):
+#         self.menu = menu
+#         self.address = address
 
 class UserCart():
     """
