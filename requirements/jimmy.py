@@ -76,7 +76,7 @@ class RestaurantAccount:
 class jimmyReqs:
     def registerAsRestuarant(database: Database, restuarant):
         testRestuarant = RestaurantAccount('macdonalds', 'me', '99996665543', 'canada', '1234567890')
-        database.append(restuarant)
+        database.append(testRestuarant)
     def getCurrentOrders(restuarant: RestaurantAccount):
         print(restuarant.getCurrentOrders())
     def restuarantCancelOrder(restuarant: RestaurantAccount, order: Order):
