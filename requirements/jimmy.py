@@ -56,27 +56,27 @@ class RestaurantAccount:
         self.finishedOrders = {}
         self.menu = menu
 
-    def addToOrders(self, order):
-        self.currentOrders[order.id] = order
+    def addToOrders(resturant, order):
+        resturant.order_queue.current_orders[order.id] = order
 
-    def removeFromOrders(self, orderID, status, reason):
-        if orderID in self.currentOrders:
-            temp = self.currentOrders.pop(orderID)
+    def removeFromOrders(resturant, orderID, status, reason):
+        if orderID in resturant.order_queue.current_orders:
+            temp = resturant.order_queue.current_orders.pop(orderID)
             temp.setStatus(status)
             if status == 1:
                 temp.setReason(reason)
-            self.finishedOrders[orderID] = temp
+            resturant.order_queue.finished_orders[orderID] = temp
         else:
             return "order not found"
     
-    def getCurrentOrders(self):
-        return self.currentOrders
+    def getCurrentOrders(resturant):
+        return resturant.order_queue.current_orders
         
-    def addToMenu(self, menuItem):
-        self.menu[menuItem.id] = menuItem
+    def addToMenu(resturant, menuItem):
+        resturant.menu[menuItem.id] = menuItem # could be menu item name instead of ID
 
-    def getMenu(self):
-        return self.menu
+    def getMenu(resturant):
+        return resturant.menu
 
 # class jimmyReqs:
 #     def registerAsRestuarant(database: Database, restuarant):
