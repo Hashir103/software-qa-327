@@ -61,7 +61,6 @@ def run_cluster():
     This function is only executed one time to set up the database with the initial parameters from Assignment 2
     '''
 
-    # see notes
     uri = ""
 
     # Create a new client and connect to the server
@@ -81,6 +80,9 @@ def run_cluster():
 
     except Exception as e:
         print(e)
+    
+
+    return []
 
 
 run_cluster()

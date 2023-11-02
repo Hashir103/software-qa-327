@@ -11,20 +11,25 @@ from requirements.jimmy import Database
 import requirements.db
 
 def main():
-    exit = False
+    exit = True
 
     '''deprecated - from previous assignment'''
-    db = CustomerList()
-    restaurant_db = Database()
-    restaurant_db.createAndAdd("McDonalds", "Ronald McDonald", "0", "1234 McDonalds St.", "123-456-7890", {"Big Mac": 5.99, "McChicken": 4.99, "McNuggets": 6.99})
-    restaurant_db.createAndAdd("Burger King", "Burger King", "1", "1234 Burger King St.", "123-456-7890", {"Whopper": 6.99, "Chicken Sandwich": 5.99, "Fries": 3.99})
-    restaurant_db.createAndAdd("Wendys", "Wendy", "2", "1234 Wendys St.", "123-456-7890", {"Baconator": 7.99, "Spicy Chicken Sandwich": 6.99, "Frosty": 2.99})
+    # db = CustomerList()
+    # restaurant_db = Database()
+    # restaurant_db.createAndAdd("McDonalds", "Ronald McDonald", "0", "1234 McDonalds St.", "123-456-7890", {"Big Mac": 5.99, "McChicken": 4.99, "McNuggets": 6.99})
+    # restaurant_db.createAndAdd("Burger King", "Burger King", "1", "1234 Burger King St.", "123-456-7890", {"Whopper": 6.99, "Chicken Sandwich": 5.99, "Fries": 3.99})
+    # restaurant_db.createAndAdd("Wendys", "Wendy", "2", "1234 Wendys St.", "123-456-7890", {"Baconator": 7.99, "Spicy Chicken Sandwich": 6.99, "Frosty": 2.99})
+
+    # new database setup
+    databases = requirements.db.run_cluster()
+    customers_db = databases[0]
+    restaurants_db = databases[1]
+
     loggedIn = None
 
 
 
     while not(exit):
-        
         if loggedIn is None:
             selection = input("Options:\n1. Register Customer\n2. Login Customer\n3. Restaurant Actions\n4. Exit\n\nPress the number of the option you want: ")
 
