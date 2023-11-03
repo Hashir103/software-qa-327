@@ -1,7 +1,12 @@
 class Restaurant:
-
+    '''The restaurant class contains all static methods required to interact with the Restaurant Database'''
     @staticmethod
     def register_restaurant() -> dict | None:
+        '''
+        Register restaurant creates a valid Restaurant object to add to our database
+        Input: None
+        Output: The restaurant object with its information, or None
+        '''
         name = input("Enter the name of the restaurant: ")
         owner = input("Enter the name of the owner: ")
         payment_information = []
@@ -62,6 +67,11 @@ class Restaurant:
 
     @staticmethod
     def get_restaurant_order_queue(restaurant: dict) -> None:
+        """
+        This function prints out the Restaurant Order Queue
+        Input: Restaurant Object
+        Output: None
+        """
         print()
         print(f"\t\t{restaurant['restaurant_name']}: Current Orders")
         print("=========================================================")
@@ -71,6 +81,11 @@ class Restaurant:
 
     @staticmethod
     def get_restauraunt_menu(restaurant: dict) -> None:
+        """
+        This function prints out the Restaurant Menu
+        Input: Restaurant Object
+        Output: None
+        """
         print()
         print(f"\t\t{restaurant['restaurant_name']} Menu:")
         print("=========================================================")
@@ -80,6 +95,11 @@ class Restaurant:
 
     @staticmethod
     def get_restaurants(restaurants) -> None:
+        """
+        This function prints out the Restaurants in our database
+        Input: Restaurant Object
+        Output: None
+        """
         print()
         print("=========================================================")
         for key in restaurants:
@@ -87,6 +107,11 @@ class Restaurant:
         print("=========================================================")
 
     @staticmethod
-    def remove_restaurant_order(restaurant: dict, id: int, reason: str) -> bool:
+    def remove_restaurant_order(restaurant: dict, id: int) -> bool:
+        """
+        This function checks if a order ID is valid for removal
+        Params: Restaurant Object, ID (int)
+        Returns: Boolean of whether the Order ID exists in the specific restaurant
+        """
         return restaurant["order_queue"]["current_orders"].get(str(id)) != None
 

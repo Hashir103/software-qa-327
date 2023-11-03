@@ -3,7 +3,7 @@ CISC 327 Assignment 3
 Nov 2, 2023
 Group 23
 
-IMPORTANT, PLEASE RUN FROM THIS DIRECTORY. MAIN.PY IS IN THE ROOT DIRECTORY WITH A FOLDER OF REQUIREMENTS
+IMPORTANT, PLEASE READ README.TXT
 """
 import random
 import requirements.db
@@ -98,7 +98,7 @@ def main():
                                 reason = input("Enter the reason for cancellation: ")
 
                                 # remove order from order queue
-                                if Restaurant.remove_restaurant_order(restaurant, id, reason):
+                                if Restaurant.remove_restaurant_order(restaurant, id):
                                     restaurants_db.update_one({"restaurant_name": name}, {"$set": {f"order_queue.current_orders.{str(id)}": {"cancelled_order": True, "reason": reason}}})
                                 else:
                                     print("Order ID not found")

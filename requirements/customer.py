@@ -1,6 +1,9 @@
 import random
 
 class Customer():
+    '''
+    Customer Class is for static methods used for database calls and setting up the user Card function
+    '''
     def __init__(self) -> None:
         self.cart = UserCart({})
 
@@ -88,6 +91,11 @@ class UserCart():
         self.cart = {}
 
     def checkout(self, user:dict):
+        """
+        This function checks out the user's current card
+        Input: User Object
+        Output: Returns the user's order object to be sent to vendor (or None)
+        """
         payment_information = user["credit_card_info"]
         personal_information = user["personal_info"]
         cart = self.cart
