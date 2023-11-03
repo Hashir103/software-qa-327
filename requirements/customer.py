@@ -1,6 +1,12 @@
 import random
 
 class Customer():
+    def __init__(self) -> None:
+        self.cart = UserCart({})
+
+    def get_user_cart(self):
+        return self.cart
+
     @staticmethod
     def register_customer():
         email = input("Enter your email: ")
@@ -90,9 +96,7 @@ class UserCart():
             print("Your cart is empty!")
             return None
         else:
-            restaurant = input("Enter Restaurant name: ")
-            return restaurant, {
-                "cancelled_order": False,
+            return {
                 "payment_information": payment_information,
                 "personal_information": personal_information,
                 "order": cart

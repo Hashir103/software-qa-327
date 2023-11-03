@@ -66,10 +66,8 @@ class Restaurant:
         print(f"\t\t{restaurant['restaurant_name']}: Current Orders")
         print("=========================================================")
         for key in restaurant['order_queue']['current_orders']:
-            print(f"\t\t{key}: {restaurant['restaurant_info'][key]}")
+            print(f"\t\t{key}: {restaurant['order_queue']['current_orders'][key]}")
         print("=========================================================")
-        for key in restaurant['order_queue']['finished_orders']:
-            print(f"\t\t{key}: {restaurant['restaurant_info'][key]}")
 
     @staticmethod
     def get_restauraunt_menu(restaurant: dict) -> None:
@@ -81,6 +79,14 @@ class Restaurant:
         print("=========================================================")
 
     @staticmethod
+    def get_restaurants(restaurants) -> None:
+        print()
+        print("=========================================================")
+        for key in restaurants:
+            print(f"\t\t{key['restaurant_name']}")
+        print("=========================================================")
+
+    @staticmethod
     def remove_restaurant_order(restaurant: dict, id: int, reason: str) -> bool:
-        return restaurant["order_queue"].get(str(id)) != None
+        return restaurant["order_queue"]["current_orders"].get(str(id)) != None
 

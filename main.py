@@ -5,8 +5,9 @@ Group 23
 
 IMPORTANT, PLEASE RUN FROM THIS DIRECTORY. MAIN.PY IS IN THE ROOT DIRECTORY WITH A FOLDER OF REQUIREMENTS
 """
+import random
 import requirements.db
-from requirements.customer import UserCart, Customer
+from requirements.customer import Customer
 from requirements.restaurant import Restaurant
 
 def main():
@@ -22,6 +23,7 @@ def main():
         restaurants_db = databases[1]
 
     loggedIn = None
+    customer = None
 
     while not(exit):
         if loggedIn is None:
@@ -51,6 +53,7 @@ def main():
                     
                     else:
                         print("\nSuccessfully logged in!")
+                        customer = Customer()
 
                 case "3":
                     # set log in type as restaurant
@@ -96,7 +99,7 @@ def main():
 
                                 # remove order from order queue
                                 if Restaurant.remove_restaurant_order(restaurant, id, reason):
-                                    restaurants_db.update_one({"restaurant_name": name}, {"$set": {str(id): {"cancelled_order": True}}})
+                                    restaurants_db.update_one({"restaurant_name": name}, {"$set": {f"order_queue.current_orders.{str(id)}": {"cancelled_order": True, "reason": reason}}})
                                 else:
                                     print("Order ID not found")
                             else:
@@ -108,43 +111,70 @@ def main():
                         print("Invalid option. Please try again.")
             else:
                 # logged in as customer
-
-                # made cart created per session
-                cart = UserCart({})
-                selection = input("Options:\n1. View Restaurant Menu\n2. Manage Cart\n3. Exit\n\nPress the number of the option you want: ")
+                selection = input("Options:\n1. View Available Restaurants\n2. View Restaurant Menu\n3. Manage Cart\n4. Exit\n\nPress the number of the option you want: ")
                 
                 match selection:
                     case "1":
+                        restaurants = restaurants_db.find({"restaurant_name": {"$exists": True}})
+                        Restaurant.get_restaurants(restaurants)
+                    case "2":
                         restaurant = restaurants_db.find_one({"restaurant_name":input("Enter the name of the restaurant: ")})
                         if restaurant is None:
                             print("Restaurant not found!")
                         else:
                             Restaurant.get_restauraunt_menu(restaurant)
                         
-                    case "2":
-                        selection = input("Options:\n1. Add to Cart\n2. Remove from Cart\n3. Clear Cart\n4. Checkout\n5. Exit\n\nPress the number of the option you want: ")
-                        
-                        match selection:
-                            case "1":
-                                item = input("Enter the name of the item: ")
-                                quantity = int(input("Enter the quantity of the item: "))
-                                cart.add_to_cart(item, quantity)
-                            case "2":
-                                item = input("Enter the name of the item: ")
-                                quantity = int(input("Enter the quantity of the item: "))
-                                cart.remove_from_cart(item, quantity)
-                            case "3":
-                                cart.clear_cart()
-                            case "4":
-                                order = cart.checkout(loggedIn)
-                                if order is not None:
-                                    pass
-                            case "5":
-                                print("Exiting..")
-                                exit = True
-                            case _:
-                                print("Invalid option. Please try again.")
                     case "3":
+                        name = input("Select a restaurant to manage your cart for: ")
+                        restaurant = restaurants_db.find_one({"restaurant_name": name})
+                        if restaurant is None:
+                            print("Restaurant not found!")
+                        else:
+                            # made cart created per session
+                            cart = customer.get_user_cart() # type: ignore
+                            cartMenu = True
+                            while cartMenu:
+                                selection = input("Options:\n1. Add to Cart\n2. Remove from Cart\n3. Clear Cart\n4. Checkout\n5. Back to Menu\n6. Exit\n\nPress the number of the option you want: ")
+                                
+                                match selection:
+                                    case "1":
+                                        item = input("Enter the name of the item: ")
+                                        quantity = int(input("Enter the quantity of the item: "))
+                                        cart.add_to_cart(item, quantity)
+                                    case "2":
+                                        item = input("Enter the name of the item: ")
+                                        quantity = int(input("Enter the quantity of the item: "))
+                                        cart.remove_from_cart(item, quantity)
+                                    case "3":
+                                        cart.clear_cart()
+                                    case "4":
+                                        order = cart.checkout(loggedIn)
+                                        if order is not None:
+                                            id = str(random.randint(100000, 999999))
+                                            check = restaurants_db.find_one({
+                                                "restaurant_name":name,
+                                                "order_queue.current_orders.id": id
+                                            })
+                                            while check:
+                                                id = str(random.randint(100000, 999999))
+                                                check = restaurants_db.find_one({
+                                                "restaurant_name":name,
+                                                "order_queue.current_orders.id": id
+                                            })
+                                            restaurants_db.update_one({"restaurant_name": name}, {"$set": {f"order_queue.current_orders.{str(id)}": {"order":order ,"cancelled_order": False, "reason": ""}}})
+                                            print("Order Succesfully sent to Vendor")
+                                            cartMenu = False
+                                    case "5":
+                                        print("Back to menu..")
+                                        cartMenu = False
+                                    case "6":
+                                        print("Exiting..")
+                                        cartMenu = False
+                                        exit = True
+                                    case _:
+                                        print("Invalid option. Please try again.")
+                                print()
+                    case "4":
                         print("Exiting..")
                         exit = True
                     case _:
