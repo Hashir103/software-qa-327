@@ -102,69 +102,78 @@ def main():
                     print("Invalid option. Please try again.")
         
         else:
-            exit = True
-            # if loggedIn == "Restaurant":
-            #     selection = input("Options\n1. Register Restaurant\n2. Get Restaurant Orders\n3. Cancel Customer Order\n4. Exit\n\nPress the number of the option you want: ")
-            #     match selection:
-            #         case "1":
-            #             name = input("Enter the name of the restaurant: ")
-            #             owner = input("Enter the name of the owner: ")
-            #             paymentInformation = input("Enter the payment information: ")
-            #             location = input("Enter the location of the restaurant: ")
-            #             phone = input("Enter the phone number of the restaurant: ")
+            if loggedIn == "Restaurant":
+                exit = True
+                # selection = input("Options\n1. Register Restaurant\n2. Get Restaurant Orders\n3. Cancel Customer Order\n4. Exit\n\nPress the number of the option you want: ")
+                # match selection:
+                #     case "1":
+                #         name = input("Enter the name of the restaurant: ")
+                #         owner = input("Enter the name of the owner: ")
+                #         paymentInformation = input("Enter the payment information: ")
+                #         location = input("Enter the location of the restaurant: ")
+                #         phone = input("Enter the phone number of the restaurant: ")
 
-            #             if name and owner and paymentInformation and location and phone:
-            #                 restaurant_db.createAndAdd(name, owner, paymentInformation, location, phone, {})
-            #         case "2":
-            #             name = input("Enter the name of the restaurant: ")
-            #             print(restaurant_db.getRestuarant(name))
-            #         case "3":
-            #             name = input("Enter the name of the restaurant: ")
-            #             id = input("Enter the id of the order: ")
-            #             reason = input("Enter the reason for cancellation: ")
-            #             restaurant_db.getRestuarant(name).removeFromOrders(id, 0, reason)
-            #         case "4":
-            #             print("Exiting..")
-            #             exit = True
-            #         case _:
-            #             print("Invalid option. Please try again.")
-            # else:
-            #     # logged in as customer
+                #         if name and owner and paymentInformation and location and phone:
+                #             restaurant_db.createAndAdd(name, owner, paymentInformation, location, phone, {})
+                #     case "2":
+                #         name = input("Enter the name of the restaurant: ")
+                #         print(restaurant_db.getRestuarant(name))
+                #     case "3":
+                #         name = input("Enter the name of the restaurant: ")
+                #         id = input("Enter the id of the order: ")
+                #         reason = input("Enter the reason for cancellation: ")
+                #         restaurant_db.getRestuarant(name).removeFromOrders(id, 0, reason)
+                #     case "4":
+                #         print("Exiting..")
+                #         exit = True
+                #     case _:
+                #         print("Invalid option. Please try again.")
+            else:
+                # logged in as customer
 
-            #     # made cart created per session
-            #     cart = UserCart({})
-            #     selection = input("Options:\n1. View Restaurant Menu\n2. Manage Cart\n3. Exit\n\nPress the number of the option you want: ")
+                # made cart created per session
+                cart = UserCart({})
+                selection = input("Options:\n1. View Restaurant Menu\n2. Manage Cart\n3. Exit\n\nPress the number of the option you want: ")
                 
-            #     match selection:
-            #         case "1":
-            #             restaurantName = input("Enter the name of the restaurant: ")
-            #             print(restaurant_db.getRestuarant(restaurantName).getMenu())
-            #         case "2":
-            #             selection = input("Options:\n1. Add to Cart\n2. Remove from Cart\n3. Clear Cart\n4. Checkout\n5. Exit\n\nPress the number of the option you want: ")
+                match selection:
+                    case "1":
+                        restaurant = restaurants_db.find_one({"restaurant_name":input("Enter the name of the restaurant: ")})
+                        if restaurant is None:
+                            print("Restaurant not found!")
+                        else:
+                            print()
+                            print(f"\t\t{restaurant['restaurant_name']} Menu:")
+                            print("=========================================================")
+                            for key in restaurant["menu"]:
+                                print(f"\t\t{key}: {restaurant['menu'][key]}")
+                            print("=========================================================")
                         
-            #             match selection:
-            #                 case "1":
-            #                     item = input("Enter the name of the item: ")
-            #                     quantity = int(input("Enter the quantity of the item: "))
-            #                     cart.add_to_cart(item, quantity)
-            #                 case "2":
-            #                     item = input("Enter the name of the item: ")
-            #                     quantity = int(input("Enter the quantity of the item: "))
-            #                     cart.remove_from_cart(item, quantity)
-            #                 case "3":
-            #                     cart.clear_cart()
-            #                 case "4":
-            #                     cart.checkout(loggedIn)
-            #                 case "5":
-            #                     print("Exiting..")
-            #                     exit = True
-            #                 case _:
-            #                     print("Invalid option. Please try again.")
-            #         case "3":
-            #             print("Exiting..")
-            #             exit = True
-            #         case _:
-            #             print("Invalid option. Please try again.")
+                    case "2":
+                        selection = input("Options:\n1. Add to Cart\n2. Remove from Cart\n3. Clear Cart\n4. Checkout\n5. Exit\n\nPress the number of the option you want: ")
+                        
+                        match selection:
+                            case "1":
+                                item = input("Enter the name of the item: ")
+                                quantity = int(input("Enter the quantity of the item: "))
+                                cart.add_to_cart(item, quantity)
+                            case "2":
+                                item = input("Enter the name of the item: ")
+                                quantity = int(input("Enter the quantity of the item: "))
+                                cart.remove_from_cart(item, quantity)
+                            case "3":
+                                cart.clear_cart()
+                            case "4":
+                                cart.checkout(loggedIn)
+                            case "5":
+                                print("Exiting..")
+                                exit = True
+                            case _:
+                                print("Invalid option. Please try again.")
+                    case "3":
+                        print("Exiting..")
+                        exit = True
+                    case _:
+                        print("Invalid option. Please try again.")
         print()
  
 
