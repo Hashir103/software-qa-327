@@ -10,7 +10,7 @@ import requirements.db
 from requirements.customer import Customer
 from requirements.restaurant import Restaurant
 
-def main():
+def run_program(testRun = False, init_selection = None, account_info = None, rest_selection = None, cust_selection = None, cart_selection = None, item = None, quantity = None, rest_name = None, reason = None, u_id = None):
     exit = False
 
     # new database setup
@@ -27,9 +27,9 @@ def main():
 
     while not(exit):
         if loggedIn is None:
-            selection = input("Options:\n1. Register Customer\n2. Login Customer\n3. Restaurant Actions\n4. Exit\n\nPress the number of the option you want: ")
+            init_selection = input("Options:\n1. Register Customer\n2. Login Customer\n3. Restaurant Actions\n4. Exit\n\nPress the number of the option you want: ") if init_selection is None else init_selection
 
-            match selection:
+            match init_selection:
                 case "1":
                     # register a customer
                     customer = Customer.register_customer()
@@ -40,8 +40,8 @@ def main():
                     # find customer in database
                     account_info = {
                         "account_info": {
-                            "email": input("Enter your email: "),
-                            "password": input("Enter your password: ")
+                            "email": input("Enter your email: ") if testRun == False else account_info[0], # type: ignore
+                            "password": input("Enter your password: ") if testRun == False else account_info[1] # type: ignore
                         }
                     }
 
@@ -68,8 +68,8 @@ def main():
         
         else:
             if loggedIn == "Restaurant":
-                selection = input("Options\n1. Register Restaurant\n2. Get Restaurant Orders\n3. Cancel Customer Order\n4. Exit\n\nPress the number of the option you want: ")
-                match selection:
+                rest_selection = input("Options\n1. Register Restaurant\n2. Get Restaurant Orders\n3. Cancel Customer Order\n4. Exit\n\nPress the number of the option you want: ") if testRun == False else rest_selection
+                match rest_selection:
                     case "1":
                         # register a restaurant
                         restaurant = Restaurant.register_restaurant()
@@ -77,7 +77,8 @@ def main():
                             restaurants_db.insert_one(restaurant)
                     case "2":
                         # find a restaurant in database
-                        restaurant = restaurants_db.find_one({"restaurant_name": input("Enter the name of the restaurant: ")})
+                        rest_name = input("Enter the name of the restaurant: ") if testRun == False else rest_name
+                        restaurant = restaurants_db.find_one({"restaurant_name": rest_name})
 
                         # if restaurant not found
                         if restaurant is None:
@@ -87,19 +88,19 @@ def main():
                             Restaurant.get_restaurant_order_queue(restaurant)
                     case "3":
                         # find a restaurant in database
-                        name = input("Enter the name of the restaurant: ")
-                        restaurant = restaurants_db.find_one({"restaurant_name": name})
+                        rest_name = input("Enter the name of the restaurant: ") if testRun == False else rest_name
+                        restaurant = restaurants_db.find_one({"restaurant_name": rest_name})
                         if restaurant is None:
                             print("Restaurant not found!")
                         else:
-                            id = input("Enter the order ID: ")
-                            if id.isnumeric():
-                                id = int(id)
-                                reason = input("Enter the reason for cancellation: ")
+                            u_id = input("Enter the order ID: ") if testRun == False else u_id
+                            if u_id.isnumeric():
+                                u_id = int(u_id)
+                                reason = input("Enter the reason for cancellation: ") if testRun == False else reason
 
                                 # remove order from order queue
-                                if Restaurant.remove_restaurant_order(restaurant, id):
-                                    restaurants_db.update_one({"restaurant_name": name}, {"$set": {f"order_queue.current_orders.{str(id)}": {"cancelled_order": True, "reason": reason}}})
+                                if Restaurant.remove_restaurant_order(restaurant, u_id):
+                                    restaurants_db.update_one({"restaurant_name": rest_name}, {"$set": {f"order_queue.current_orders.{str(u_id)}": {"cancelled_order": True, "reason": reason}}})
                                 else:
                                     print("Order ID not found")
                             else:
@@ -111,22 +112,27 @@ def main():
                         print("Invalid option. Please try again.")
             else:
                 # logged in as customer
-                selection = input("Options:\n1. View Available Restaurants\n2. View Restaurant Menu\n3. Manage Cart\n4. Exit\n\nPress the number of the option you want: ")
+                cust_selection = input("Options:\n1. View Available Restaurants\n2. View Restaurant Menu\n3. Manage Cart\n4. Exit\n\nPress the number of the option you want: ") if testRun == False else cust_selection
                 
-                match selection:
+                match cust_selection:
                     case "1":
                         restaurants = restaurants_db.find({"restaurant_name": {"$exists": True}})
-                        Restaurant.get_restaurants(restaurants)
+                        info = Restaurant.get_restaurants(restaurants)
+                        if testRun:
+                            return info[1]
                     case "2":
-                        restaurant = restaurants_db.find_one({"restaurant_name":input("Enter the name of the restaurant: ")})
+                        rest_name = input("Enter the name of the restaurant: ") if testRun == False else rest_name
+                        restaurant = restaurants_db.find_one({"restaurant_name": rest_name})
                         if restaurant is None:
                             print("Restaurant not found!")
                         else:
-                            Restaurant.get_restauraunt_menu(restaurant)
+                            print(Restaurant.get_restauraunt_menu(restaurant)[0])
+                            if testRun:
+                                return Restaurant.get_restauraunt_menu(restaurant)[1]
                         
                     case "3":
-                        name = input("Select a restaurant to manage your cart for: ")
-                        restaurant = restaurants_db.find_one({"restaurant_name": name})
+                        rest_name = input("Select a restaurant to manage your cart for: ") if testRun == False else rest_name
+                        restaurant = restaurants_db.find_one({"restaurant_name": rest_name})
                         if restaurant is None:
                             print("Restaurant not found!")
                         else:
@@ -134,34 +140,34 @@ def main():
                             cart = customer.get_user_cart() # type: ignore
                             cartMenu = True
                             while cartMenu:
-                                selection = input("Options:\n1. Add to Cart\n2. Remove from Cart\n3. Clear Cart\n4. Checkout\n5. Back to Menu\n6. Exit\n\nPress the number of the option you want: ")
+                                cart_selection = input("Options:\n1. Add to Cart\n2. Remove from Cart\n3. Clear Cart\n4. Checkout\n5. Back to Menu\n6. Exit\n\nPress the number of the option you want: ") if testRun == False else cart_selection
                                 
-                                match selection:
+                                match cart_selection:
                                     case "1":
-                                        item = input("Enter the name of the item: ")
-                                        quantity = int(input("Enter the quantity of the item: "))
-                                        cart.add_to_cart(item, quantity)
+                                        item = input("Enter the name of the item: ") if testRun == False else item
+                                        quantity = int(input("Enter the quantity of the item: ")) if testRun == False else quantity
+                                        cart.add_to_cart(item, quantity) # type: ignore
                                     case "2":
-                                        item = input("Enter the name of the item: ")
-                                        quantity = int(input("Enter the quantity of the item: "))
-                                        cart.remove_from_cart(item, quantity)
+                                        item = input("Enter the name of the item: ") if testRun == False else item
+                                        quantity = int(input("Enter the quantity of the item: ")) if testRun == False else quantity
+                                        cart.remove_from_cart(item, quantity) # type: ignore
                                     case "3":
                                         cart.clear_cart()
                                     case "4":
                                         order = cart.checkout(loggedIn)
                                         if order is not None:
-                                            id = str(random.randint(100000, 999999))
+                                            u_id = str(random.randint(100000, 999999))
                                             check = restaurants_db.find_one({
-                                                "restaurant_name":name,
-                                                "order_queue.current_orders.id": id
+                                                "restaurant_name":rest_name,
+                                                "order_queue.current_orders.id": u_id
                                             })
                                             while check:
-                                                id = str(random.randint(100000, 999999))
+                                                u_id = str(random.randint(100000, 999999))
                                                 check = restaurants_db.find_one({
-                                                "restaurant_name":name,
-                                                "order_queue.current_orders.id": id
+                                                "restaurant_name":rest_name,
+                                                "order_queue.current_orders.id": u_id
                                             })
-                                            restaurants_db.update_one({"restaurant_name": name}, {"$set": {f"order_queue.current_orders.{str(id)}": {"order":order ,"cancelled_order": False, "reason": ""}}})
+                                            restaurants_db.update_one({"restaurant_name": rest_name}, {"$set": {f"order_queue.current_orders.{str(u_id)}": {"order":order ,"cancelled_order": False, "reason": ""}}})
                                             print("Order Succesfully sent to Vendor")
                                             cartMenu = False
                                     case "5":
@@ -183,4 +189,4 @@ def main():
  
 
 if __name__ == '__main__':
-    main()
+    run_program()

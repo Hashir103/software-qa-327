@@ -80,31 +80,34 @@ class Restaurant:
         print("=========================================================")
 
     @staticmethod
-    def get_restauraunt_menu(restaurant: dict) -> None:
+    def get_restauraunt_menu(restaurant: dict) -> tuple:
         """
         This function prints out the Restaurant Menu
         Input: Restaurant Object
-        Output: None
+        Output: tuple of string and dictionary
         """
-        print()
-        print(f"\t\t{restaurant['restaurant_name']} Menu:")
-        print("=========================================================")
+        s = "\n"
+        s += f"\t\t{restaurant['restaurant_name']} Menu:\n"
+        s+= "=========================================================\n\n"
         for key in restaurant["menu"]:
-            print(f"\t\t{key}: {restaurant['menu'][key]}")
-        print("=========================================================")
+            s+= f"\t\t{key}: {restaurant['menu'][key]}\n"
+        s+= "\n========================================================="
+        return s, restaurant['menu']
 
     @staticmethod
-    def get_restaurants(restaurants) -> None:
+    def get_restaurants(restaurants) -> tuple:
         """
         This function prints out the Restaurants in our database
         Input: Restaurant Object
-        Output: None
+        Output: str
         """
-        print()
-        print("=========================================================")
+        s = "\n"
+        s+= "=========================================================\n\n"
         for key in restaurants:
-            print(f"\t\t{key['restaurant_name']}")
-        print("=========================================================")
+            s+= f"\t\t{key['restaurant_name']}\n"
+        s+= "\n========================================================="
+
+        return s, True
 
     @staticmethod
     def remove_restaurant_order(restaurant: dict, id: int) -> bool:
