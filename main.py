@@ -50,10 +50,14 @@ def run_program(testRun = False, init_selection = None, account_info = None, res
                     # customer not found in database
                     if loggedIn is None:
                         print("\nAn account does not exist with that email and password combination.")
+                        if testRun and (cust_selection is None and rest_selection is None):
+                            return False
                     
                     else:
                         print("\nSuccessfully logged in!")
                         customer = Customer()
+                        if testRun and (cust_selection is None and rest_selection is None):
+                            return True
 
                 case "3":
                     # set log in type as restaurant
