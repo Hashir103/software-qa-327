@@ -50,13 +50,13 @@ def run_program(testRun = False, init_selection = None, account_info = None, res
                     # customer not found in database
                     if loggedIn is None:
                         print("\nAn account does not exist with that email and password combination.")
-                        if testRun and (cust_selection is None and rest_selection is None):
+                        if testRun == 1 and (cust_selection is None and rest_selection is None):
                             return False
                     
                     else:
                         print("\nSuccessfully logged in!")
                         customer = Customer()
-                        if testRun and (cust_selection is None and rest_selection is None):
+                        if testRun == 1 and (cust_selection is None and rest_selection is None):
                             return True
 
                 case "3":
@@ -122,7 +122,7 @@ def run_program(testRun = False, init_selection = None, account_info = None, res
                     case "1":
                         restaurants = restaurants_db.find({"restaurant_name": {"$exists": True}})
                         info = Restaurant.get_restaurants(restaurants)
-                        if testRun:
+                        if testRun == 1:
                             return info[1]
                     case "2":
                         rest_name = input("Enter the name of the restaurant: ") if testRun == False else rest_name
@@ -131,7 +131,7 @@ def run_program(testRun = False, init_selection = None, account_info = None, res
                             print("Restaurant not found!")
                         else:
                             print(Restaurant.get_restauraunt_menu(restaurant)[0])
-                            if testRun:
+                            if testRun == 1:
                                 return Restaurant.get_restauraunt_menu(restaurant)[1]
                         
                     case "3":
