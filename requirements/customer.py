@@ -77,10 +77,13 @@ class UserCart():
         if item in self.cart:
             if self.cart[item] > quantity:
                 self.cart[item] -= quantity
+                return 2
             else:
                 del self.cart[item]
+                return 1
         else:
             print("Item not found in cart")
+            return 0
 
     def clear_cart(self):
         """

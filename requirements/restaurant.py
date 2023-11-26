@@ -89,10 +89,12 @@ class Restaurant:
         s = "\n"
         s += f"\t\t{restaurant['restaurant_name']} Menu:\n"
         s+= "=========================================================\n\n"
+        t_counter = 0
         for key in restaurant["menu"]:
             s+= f"\t\t{key}: {restaurant['menu'][key]}\n"
+            t_counter += 1
         s+= "\n========================================================="
-        return s, restaurant['menu']
+        return s, restaurant['menu'], t_counter
 
     @staticmethod
     def get_restaurants(restaurants) -> tuple:

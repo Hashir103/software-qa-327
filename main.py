@@ -7,10 +7,10 @@ IMPORTANT, PLEASE READ README.TXT
 """
 import random
 import requirements.db
-from requirements.customer import Customer
+from requirements.customer import Customer, UserCart
 from requirements.restaurant import Restaurant
 
-def run_program(testRun = False, init_selection = None, account_info = None, rest_selection = None, cust_selection = None, cart_selection = None, item = None, quantity = None, rest_name = None, reason = None, u_id = None):
+def run_program(testRun = False, init_selection = None, account_info = None, rest_selection = None, cust_selection = None, cart_selection = None, item = None, quantity = None, rest_name = None, reason = None, u_id = None, test_cart = None):
     exit = False
 
     # new database setup
@@ -133,7 +133,9 @@ def run_program(testRun = False, init_selection = None, account_info = None, res
                             print(Restaurant.get_restauraunt_menu(restaurant)[0])
                             if testRun == 1:
                                 return Restaurant.get_restauraunt_menu(restaurant)[1]
-                        
+
+                            if testRun == 2:
+                                return Restaurant.get_restauraunt_menu(restaurant)[2]
                     case "3":
                         rest_name = input("Select a restaurant to manage your cart for: ") if testRun == False else rest_name
                         restaurant = restaurants_db.find_one({"restaurant_name": rest_name})
@@ -145,7 +147,8 @@ def run_program(testRun = False, init_selection = None, account_info = None, res
                             cartMenu = True
                             while cartMenu:
                                 cart_selection = input("Options:\n1. Add to Cart\n2. Remove from Cart\n3. Clear Cart\n4. Checkout\n5. Back to Menu\n6. Exit\n\nPress the number of the option you want: ") if testRun == False else cart_selection
-                                
+                                if testRun == 2 and test_cart is not None:
+                                    cart.add_to_cart(test_cart[0], test_cart[1]) # type: ignore
                                 match cart_selection:
                                     case "1":
                                         item = input("Enter the name of the item: ") if testRun == False else item
@@ -154,7 +157,9 @@ def run_program(testRun = False, init_selection = None, account_info = None, res
                                     case "2":
                                         item = input("Enter the name of the item: ") if testRun == False else item
                                         quantity = int(input("Enter the quantity of the item: ")) if testRun == False else quantity
-                                        cart.remove_from_cart(item, quantity) # type: ignore
+                                        res = cart.remove_from_cart(item, quantity) # type: ignore
+                                        if testRun == 2:
+                                            return res
                                     case "3":
                                         cart.clear_cart()
                                     case "4":
@@ -183,6 +188,9 @@ def run_program(testRun = False, init_selection = None, account_info = None, res
                                         exit = True
                                     case _:
                                         print("Invalid option. Please try again.")
+                                if testRun == 2 and test_cart is not None:
+                                    removal_amt = test_cart[1] if test_cart[1] > 0 else 0
+                                    cart.remove_from_cart(test_cart[0], removal_amt-1) # type: ignore
                                 print()
                     case "4":
                         print("Exiting..")
