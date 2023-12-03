@@ -1,6 +1,6 @@
 """
-CISC 327 Assignment 5
-Nov 24, 2023
+CISC 327 Assignment 6
+Dec 1, 2023
 Group 23
 
 IMPORTANT, PLEASE READ README.TXT
@@ -9,6 +9,17 @@ from main import run_program
 import pytest
 
 @pytest.mark.parametrize("testRun, init_selection, account_info, rest_selection, cust_selection, cart_selection, item, quantity, rest_name, reason, u_id, test_cart, expected", [
+    # All of our Blackbox/Whitebox Tests can be run on a daily basis. Additionally, all of these are important for the functionality of our program. As a result, we've merged all of these together for our daily test script.
+
+    # Test 1: Check a failed test of Logging In by entering incorrect password
+    (1,"2", ["example@example.com","1234"], None, None, None, None, None, None, None, None, None, False),
+    # Test 1: Check a failed test of Logging In by entering incorrect email
+    (1,"2", ["exampleexample.com","1234"], None, None, None, None, None, None, None, None, None, False),
+    # Test 2: Checks if the program can successfully retrieve a Restaurant's menu correctly
+    (1, "2", ["example@example.com","12345"], None, "2", None, None, None, "McDonalds", None, None, None, {'Big Mac': 5.99, 'McChicken': 4.99, 'McNuggets': 6.99}),
+    # Test 3: Checks if the program can successfully retrieve all Restaurant's in our collection
+    (1,"2", ["example@example.com","12345"], None, "1", None, None, None, None, None, None, None, True),
+
     # Decision Coverage Testing on Removing Items from Cart
     # Test 1: If Item is not In Cart -> Return 0
     (2,"2", ["example@example.com","12345"], None, "3", "2", "Burger", 1, "McDonalds", None, None, None, 0),
